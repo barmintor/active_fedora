@@ -49,12 +49,13 @@ describe ActiveFedora::Datastreams do
           end
           has_metadata :type=>ActiveFedora::MetadataDatastream, :name=>"withText2", :label=>"withLabel" do |m|
             m.field "fubar", :text
-          end 
+          end
+          has_metadata :type=>ActiveFedora::MetadataDatastream, :name => "unVersioned", :versionable => false
           delegate :fubar, :to=>'withText'
           delegate :swank, :to=>'someData'
         end
         stub_ingest(@this_pid)
-        stub_add_ds(@this_pid, ['RELS-EXT', 'someData', 'withText', 'withText2'])
+        stub_add_ds(@this_pid, ['RELS-EXT', 'someData', 'withText', 'withText2', 'unVersioned'])
 
         @n = FooHistory.new()
         FooHistory.stubs(:assign_pid).returns(@this_pid)
@@ -72,6 +73,7 @@ describe ActiveFedora::Datastreams do
         @n.datastreams["someData"].fubar_values='bar'
         @n.datastreams["someData"].fubar_values.should == ['bar']
         @n.datastreams["withText2"].dsLabel.should == "withLabel"
+        @n.datastreams["unVersioned"].versionable.should == false
       end
     end
 

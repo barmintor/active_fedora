@@ -16,8 +16,8 @@ describe "Nesting attribute behavior of RDF resources" do
   end
 
   after do
-    Object.send(:remove_const, :ComplexResource)
-    Object.send(:remove_const, :DummyMADS)
+    undefine(:ComplexResource)
+    undefine(:DummyMADS)
   end
 
   subject { ComplexResource.new }

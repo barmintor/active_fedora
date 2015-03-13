@@ -37,9 +37,9 @@ describe ActiveFedora::NtriplesRDFDatastream do
   }
 
   after do
-    Object.send(:remove_const, :RdfTest)
-    Object.send(:remove_const, :MyDatastream)
-    Object.send(:remove_const, :FileVocabulary)
+    undefine(:RdfTest)
+    undefine(:MyDatastream)
+    undefine(:FileVocabulary)
   end
 
   it "should not try to send an empty datastream" do
@@ -223,8 +223,8 @@ describe ActiveFedora::NtriplesRDFDatastream do
     end
 
     after(:each) do
-      Object.send(:remove_const, :Foobar)
-      Object.send(:remove_const, :TitleDatastream)
+      undefine(:Foobar)
+      undefine(:TitleDatastream)
     end
 
     it "should support the count method to determine # of values" do

@@ -11,7 +11,7 @@ describe ActiveFedora::AttachedFiles do
       end
     end
     after do
-      Object.send(:remove_const, :FooHistory)
+      undefine(:FooHistory)
     end
 
     it "should have a child_resource_reflection" do
@@ -41,7 +41,7 @@ describe ActiveFedora::AttachedFiles do
     end
     after do
       Deprecation.default_deprecation_behavior = @original_behavior
-      Object.send(:remove_const, :FooHistory)
+      undefine(:FooHistory)
     end
 
     it "should have a child_resource_reflection" do
@@ -83,7 +83,7 @@ describe ActiveFedora::AttachedFiles do
       end
     end
     after do
-      Object.send(:remove_const, :FooHistory)
+      undefine(:FooHistory)
     end
 
     it "should have reasonable defaults" do
@@ -102,8 +102,8 @@ describe ActiveFedora::AttachedFiles do
     end
 
     after do
-      Object.send(:remove_const, :Bar)
-      Object.send(:remove_const, :FooHistory)
+      undefine(:Bar)
+      undefine(:FooHistory)
     end
     let(:container) { FooHistory.new }
 

@@ -12,8 +12,8 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :Person)
+      undefine(:Book)
+      undefine(:Person)
     end
 
     let(:person) { Person.create }
@@ -45,10 +45,10 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :Library)
-      Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :Person)
-      Object.send(:remove_const, :Publisher)
+      undefine(:Library)
+      undefine(:Book)
+      undefine(:Person)
+      undefine(:Publisher)
     end
 
     describe "an unsaved instance" do
@@ -343,8 +343,8 @@ describe ActiveFedora::Base do
 
     end
     after :all do
-      Object.send(:remove_const, :Course)
-      Object.send(:remove_const, :Textbook)
+      undefine(:Course)
+      undefine(:Textbook)
     end
 
     describe "with a parent that has two children" do
@@ -418,8 +418,8 @@ describe ActiveFedora::Base do
 
       end
       after :all do
-        Object.send(:remove_const, :LibraryBook)
-        Object.send(:remove_const, :Page)
+        undefine(:LibraryBook)
+        undefine(:Page)
       end
 
       describe "removing association" do
@@ -450,8 +450,8 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :LibraryBook)
-        Object.send(:remove_const, :Page)
+        undefine(:LibraryBook)
+        undefine(:Page)
       end
 
       describe "removing association" do
@@ -479,8 +479,8 @@ describe ActiveFedora::Base do
         end
       end
       after :all do
-        Object.send(:remove_const, :Bauble)
-        Object.send(:remove_const, :MediaObject)
+        undefine(:Bauble)
+        undefine(:MediaObject)
       end
 
       it "it should find the reflection that bears the predicate" do
@@ -499,8 +499,8 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :MasterFile)
-        Object.send(:remove_const, :MediaObject)
+        undefine(:MasterFile)
+        undefine(:MediaObject)
       end
 
       it "it should find the reflection that bears the predicate" do
@@ -519,8 +519,8 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :Bauble)
-        Object.send(:remove_const, :MediaObject)
+        undefine(:Bauble)
+        undefine(:MediaObject)
       end
 
       it "it should find the reflection that bears the predicate" do
@@ -540,8 +540,8 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :Bauble)
-        Object.send(:remove_const, :MediaObject)
+        undefine(:Bauble)
+        undefine(:MediaObject)
       end
 
       it "it should find the predicate" do
@@ -568,10 +568,10 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :Novel)
-        Object.send(:remove_const, :TextBook)
-        Object.send(:remove_const, :Text)
-        Object.send(:remove_const, :Image)
+        undefine(:Novel)
+        undefine(:TextBook)
+        undefine(:Text)
+        undefine(:Image)
       end
 
       describe "saving between the before and after hooks" do

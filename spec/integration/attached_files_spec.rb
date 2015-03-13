@@ -8,7 +8,7 @@ describe ActiveFedora::AttachedFiles do
       end
     end
     after do
-      Object.send(:remove_const, :FooHistory)
+      undefine(:FooHistory)
     end
 
     context "when the object exists" do
@@ -34,7 +34,7 @@ describe ActiveFedora::AttachedFiles do
     end
 
     after do
-      Object.send(:remove_const, :TestingMetadataSerializing)
+      undefine(:TestingMetadataSerializing)
     end
 
     subject { TestingMetadataSerializing.new }
@@ -56,7 +56,7 @@ describe ActiveFedora::AttachedFiles do
 
     after do
       has_file.delete
-      Object.send(:remove_const, :HasFile)
+      undefine(:HasFile)
     end
 
     let(:has_file) { HasFile.create("test:ds_versionable_has_file") }
@@ -92,7 +92,7 @@ describe ActiveFedora::AttachedFiles do
     subject { ds.content }
 
     after do
-      Object.send(:remove_const, :DSTest)
+      undefine(:DSTest)
     end
 
     it { should == 'XXX'}

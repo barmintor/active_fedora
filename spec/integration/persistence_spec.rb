@@ -11,7 +11,7 @@ describe "persisting objects" do
     end
   end
   after :all do
-    Object.send(:remove_const, :MockAFBaseRelationship)
+    undefine(:MockAFBaseRelationship)
   end
 
   describe "#create!" do

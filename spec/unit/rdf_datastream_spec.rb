@@ -23,8 +23,8 @@ describe ActiveFedora::RDFDatastream do
     end
     after do
       @obj.destroy
-      Object.send(:remove_const, :MyDatastream)
-      Object.send(:remove_const, :MyObj)
+      undefine(:MyDatastream)
+      undefine(:MyObj)
     end
 
     subject { @obj.reload.descMetadata }

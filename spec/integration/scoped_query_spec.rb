@@ -25,7 +25,7 @@ describe "scoped queries" do
   end
 
   after do
-    Object.send(:remove_const, :ModelIntegrationSpec)
+    undefine(:ModelIntegrationSpec)
   end
 
 

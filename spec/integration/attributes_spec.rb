@@ -26,9 +26,9 @@ describe "delegating attributes" do
   end
 
   after :all do
-    Object.send(:remove_const, :TitledObject)
-    Object.send(:remove_const, :RdfObject)
-    Object.send(:remove_const, :PropertiesDatastream)
+    undefine(:TitledObject)
+    undefine(:RdfObject)
+    undefine(:PropertiesDatastream)
   end
 
   context "with a simple datastream" do

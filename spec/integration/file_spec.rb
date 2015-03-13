@@ -52,7 +52,7 @@ describe ActiveFedora::File do
     end
 
     after do
-      Object.send(:remove_const, :MockAFBase)
+      undefine(:MockAFBase)
     end
 
     let(:test_object) { MockAFBase.create }

@@ -58,7 +58,7 @@ describe ActiveFedora::OmDatastream do
         subject.title = 'Science'
       end
       after do
-        Object.send(:remove_const, :MyDatastream)
+        undefine(:MyDatastream)
       end
       subject { MyDatastream.new }
       it "should use the prefix" do
@@ -320,7 +320,7 @@ describe ActiveFedora::OmDatastream do
     end
     after do
       @obj.destroy
-      Object.send(:remove_const, :MyObj)
+      undefine(:MyObj)
     end
     subject { @obj.reload.descMetadata } 
     it "should not load the descMetadata datastream when calling content_changed?" do

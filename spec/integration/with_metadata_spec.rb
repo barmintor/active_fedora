@@ -16,8 +16,8 @@ describe ActiveFedora::WithMetadata do
   end
 
   after do
-    Object.send(:remove_const, :SampleFile)
-    Object.send(:remove_const, :Sample)
+    undefine(:SampleFile)
+    undefine(:Sample)
   end
 
   let(:base) { Sample.new }

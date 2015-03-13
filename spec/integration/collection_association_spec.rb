@@ -15,8 +15,8 @@ describe ActiveFedora::Base do
   let!(:book2) { Book.create!(library: library) }
 
   after do
-    Object.send(:remove_const, :Library)
-    Object.send(:remove_const, :Book)
+    undefine(:Library)
+    undefine(:Book)
   end
 
   describe "load_from_solr" do

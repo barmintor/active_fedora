@@ -60,8 +60,8 @@ describe "Nesting attribute behavior of RDFDatastream" do
         end
       end
       after do
-        Object.send(:remove_const, :ComplexRDFDatastream)
-        Object.send(:remove_const, :DummyMADS)
+        undefine(:ComplexRDFDatastream)
+        undefine(:DummyMADS)
       end
       subject { ComplexRDFDatastream.new }
       let(:params) do
@@ -157,7 +157,7 @@ describe "Nesting attribute behavior of RDFDatastream" do
       end
 
       after(:each) do
-        Object.send(:remove_const, :SpecDatastream)
+        undefine(:SpecDatastream)
       end
       subject { SpecDatastream.new }
       before do

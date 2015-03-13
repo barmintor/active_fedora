@@ -29,8 +29,8 @@ describe ActiveFedora::Base do
     expect(b.class.ds_specs).to_not eq f.class.ds_specs
   end
   after do
-    Object.send(:remove_const, :Bar)
-    Object.send(:remove_const, :Foo)
+    undefine(:Bar)
+    undefine(:Foo)
   end
 
 end

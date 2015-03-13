@@ -16,8 +16,8 @@ describe ActiveFedora::Associations::HasAndBelongsToManyAssociation do
     end
 
     after do
-      Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :Page)
+      undefine(:Book)
+      undefine(:Page)
     end
     subject { Book.new('subject-a') }
 
@@ -98,8 +98,8 @@ describe ActiveFedora::Associations::HasAndBelongsToManyAssociation do
       Collection.destroy_all
       Thing.destroy_all
 
-      Object.send(:remove_const, :Collection)
-      Object.send(:remove_const, :Thing)
+      undefine(:Collection)
+      undefine(:Thing)
     end
 
     context "with a new collection" do

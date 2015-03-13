@@ -10,7 +10,7 @@ describe ActiveFedora::Model do
   end
   
   after(:all) do
-    Object.send(:remove_const, :SpecModel)
+    undefine(:SpecModel)
   end
   
   describe '.solr_query_handler' do

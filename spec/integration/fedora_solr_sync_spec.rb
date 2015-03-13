@@ -13,8 +13,8 @@ describe "fedora_solr_sync_issues" do
   end
 
   after :all do
-    Object.send(:remove_const, :ChildThing)
-    Object.send(:remove_const, :ParentThing)
+    undefine(:ChildThing)
+    undefine(:ParentThing)
   end
 
   let(:parent) { ParentThing.create }

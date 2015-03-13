@@ -22,9 +22,9 @@ describe ActiveFedora::Base do
   subject { Book.new(library: library, title: "War and Peace", publisher: "Random House") }
 
   after do
-    Object.send(:remove_const, :Book)
-    Object.send(:remove_const, :Library)
-    Object.send(:remove_const, :MyDatastream)
+    undefine(:Book)
+    undefine(:Library)
+    undefine(:MyDatastream)
   end
 
   it "should assert a content model" do

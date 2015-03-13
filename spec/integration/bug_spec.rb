@@ -17,7 +17,7 @@ describe 'bugs' do
   end
   after do
     @test_object.delete
-    Object.send(:remove_const, :FooHistory)
+    undefine(:FooHistory)
   end
 
   it 'should raise ActiveFedora::ObjectNotFoundError when find("")' do

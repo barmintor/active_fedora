@@ -42,12 +42,12 @@ describe "NestedAttribute behavior" do
     end
   end
   after do
-    Object.send(:remove_const, :Bar)
-    Object.send(:remove_const, :CarAllBlank)
-    Object.send(:remove_const, :CarProc)
-    Object.send(:remove_const, :CarSymbol)
-    Object.send(:remove_const, :CarWithLimit)
-    Object.send(:remove_const, :Car)
+    undefine(:Bar)
+    undefine(:CarAllBlank)
+    undefine(:CarProc)
+    undefine(:CarSymbol)
+    undefine(:CarWithLimit)
+    undefine(:Car)
   end
 
   it "should have _destroy" do

@@ -30,9 +30,9 @@ describe ActiveFedora::RDFDatastream do
   end
 
   after do
-    Object.send(:remove_const, "DummyAsset")
-    Object.send(:remove_const, "DummyResource")
-    Object.send(:remove_const, "DummySubnode")
+    undefine("DummyAsset")
+    undefine("DummyResource")
+    undefine("DummySubnode")
   end
 
   subject { DummyAsset.new }

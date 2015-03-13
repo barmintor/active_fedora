@@ -8,8 +8,8 @@ describe ActiveFedora::Base do
     class Book < ActiveFedora::Base; end
   end
   after :all do
-    Object.send(:remove_const, :Library)
-    Object.send(:remove_const, :Book)
+    undefine(:Library)
+    undefine(:Book)
   end
 
   subject { Library.all }

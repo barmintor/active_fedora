@@ -30,8 +30,8 @@ describe "Mass assignment protection" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :ProtectedParams)
-    Object.send(:remove_const, :Person)
+    undefine(:ProtectedParams)
+    undefine(:Person)
   end
 
 

@@ -56,3 +56,7 @@ end
 def fixture(file)
   File.open(File.join(File.dirname(__FILE__), 'fixtures', file), 'rb')
 end
+
+def undefine(const)
+  Object.send(:remove_const, const) if (Object.const_defined? const)
+end

@@ -26,7 +26,7 @@ describe ActiveFedora::RDF::IndexingService do
   end
 
   after do
-    Object.send(:remove_const, :MyDatastream)
+    undefine(:MyDatastream)
   end
 
   let(:f2) do

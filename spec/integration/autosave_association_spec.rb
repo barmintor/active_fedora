@@ -7,7 +7,7 @@ describe ActiveFedora::Base do
     end
   end
   after :all do
-    Object.send(:remove_const, :MockAFBaseRelationship)
+    undefine(:MockAFBaseRelationship)
   end
 
   subject { MockAFBaseRelationship.new }

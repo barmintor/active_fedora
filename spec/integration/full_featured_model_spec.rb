@@ -104,7 +104,7 @@ describe ActiveFedora::Base do
   end
 
   after(:all) do
-    Object.send(:remove_const, :OralHistory)
+    undefine(:OralHistory)
   end
 
   it "should be an instance of ActiveFedora::Base" do

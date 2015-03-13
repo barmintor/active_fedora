@@ -9,7 +9,7 @@ describe "a versionable class" do
   end
 
   after do
-    Object.send(:remove_const, :WithVersions)
+    undefine(:WithVersions)
   end
 
   subject { WithVersions.new }
@@ -92,8 +92,8 @@ describe "a versionable rdf datastream" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :MockAFBase)
-    Object.send(:remove_const, :VersionableDatastream)
+    undefine(:MockAFBase)
+    undefine(:VersionableDatastream)
   end
 
   it "should create the object" do
@@ -228,8 +228,8 @@ describe "a versionable OM datastream" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :MockAFBase)
-    Object.send(:remove_const, :VersionableDatastream)
+    undefine(:MockAFBase)
+    undefine(:VersionableDatastream)
   end
 
   subject { test_object.descMetadata }
@@ -358,8 +358,8 @@ describe "a versionable binary datastream" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :MockAFBase)
-    Object.send(:remove_const, :BinaryDatastream)
+    undefine(:MockAFBase)
+    undefine(:BinaryDatastream)
   end
 
   subject { test_object.content }
@@ -489,7 +489,7 @@ describe "a non-versionable resource" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :NotVersionableWithVersions)
+    undefine(:NotVersionableWithVersions)
   end
 
   subject { NotVersionableWithVersions.new }

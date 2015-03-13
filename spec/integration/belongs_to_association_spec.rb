@@ -14,9 +14,9 @@ describe ActiveFedora::Base do
 
   end
   after do
-    Object.send(:remove_const, :Library)
-    Object.send(:remove_const, :SpecialInheritedBook)
-    Object.send(:remove_const, :Book)
+    undefine(:Library)
+    undefine(:SpecialInheritedBook)
+    undefine(:Book)
   end
 
   let(:library) { Library.create }
@@ -107,10 +107,10 @@ describe ActiveFedora::Base do
 
     end
     after :all do
-      Object.send(:remove_const, :SimpleObject)
-      Object.send(:remove_const, :ComplexObject)
-      Object.send(:remove_const, :SimpleCollection)
-      Object.send(:remove_const, :ComplexCollection)
+      undefine(:SimpleObject)
+      undefine(:ComplexObject)
+      undefine(:SimpleCollection)
+      undefine(:ComplexCollection)
     end
 
     describe "saving between the before and after hooks" do

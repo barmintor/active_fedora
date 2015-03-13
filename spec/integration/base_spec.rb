@@ -7,7 +7,7 @@ describe "A base object with metadata" do
     end
   end
   after :each do
-    Object.send(:remove_const, :MockAFBaseRelationship)
+    undefine(:MockAFBaseRelationship)
   end
   describe "a new document" do
     before do
@@ -87,7 +87,7 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :Book)
+      undefine(:Book)
     end
     let!(:obj) { Book.create }
 

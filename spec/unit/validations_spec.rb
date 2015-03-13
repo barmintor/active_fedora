@@ -19,7 +19,7 @@ describe ActiveFedora::Base do
   subject { ValidationStub.new }
 
   after :all do
-    Object.send(:remove_const, :ValidationStub)
+    undefine(:ValidationStub)
   end
 
   describe "a valid object" do

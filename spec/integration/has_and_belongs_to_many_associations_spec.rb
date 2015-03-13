@@ -21,10 +21,10 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :SpecialInheritedBook)
-      Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :Collection)
-      Object.send(:remove_const, :Topic)
+      undefine(:SpecialInheritedBook)
+      undefine(:Book)
+      undefine(:Collection)
+      undefine(:Topic)
     end
 
     describe "an unsaved instance" do
@@ -122,8 +122,8 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :Book)
-      Object.send(:remove_const, :Collection)
+      undefine(:Book)
+      undefine(:Collection)
     end
 
     let (:book) { Book.create }
@@ -174,8 +174,8 @@ describe ActiveFedora::Base do
       end
 
       after do
-        Object.send(:remove_const, :Book)
-        Object.send(:remove_const, :Collection)
+        undefine(:Book)
+        undefine(:Collection)
       end
 
       let (:book) { Book.create }
@@ -220,8 +220,8 @@ describe ActiveFedora::Base do
       end
 
       after do
-        Object.send(:remove_const, :Book)
-        Object.send(:remove_const, :Collection)
+        undefine(:Book)
+        undefine(:Collection)
       end
 
       let (:book) { Book.create }
@@ -267,8 +267,8 @@ describe ActiveFedora::Base do
       end
 
       after do
-        Object.send(:remove_const, :Book)
-        Object.send(:remove_const, :Collection)
+        undefine(:Book)
+        undefine(:Collection)
       end
 
       let(:book) { Book.create }
@@ -311,8 +311,8 @@ describe "create" do
   end
 
   after do
-    Object.send(:remove_const, :Book)
-    Object.send(:remove_const, :Collection)
+    undefine(:Book)
+    undefine(:Collection)
   end
 
   let(:book) { Book.create }
@@ -347,8 +347,8 @@ describe "Autosave" do
   end
 
   after do
-    Object.send(:remove_const, :Item)
-    Object.send(:remove_const, :Component)
+    undefine(:Item)
+    undefine(:Component)
   end
 
   describe "From the has_and_belongs_to_many side" do

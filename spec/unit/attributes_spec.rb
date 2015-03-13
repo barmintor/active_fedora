@@ -30,7 +30,7 @@ describe ActiveFedora::Base do
         end
     end
     after :all do
-      Object.send(:remove_const, :BarStream2)
+      undefine(:BarStream2)
     end
 
     describe "first level delegation" do
@@ -63,7 +63,7 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :BarHistory2)
+        undefine(:BarHistory2)
       end
 
       subject { BarHistory2.new }
@@ -114,7 +114,7 @@ describe ActiveFedora::Base do
           subject { BarHistory3.new }
 
           after do
-            Object.send(:remove_const, :BarHistory3)
+            undefine(:BarHistory3)
           end
 
           it "should show the library_id" do
@@ -260,8 +260,8 @@ describe ActiveFedora::Base do
       end
 
       after :all do
-        Object.send(:remove_const, :BarHistory3)
-        Object.send(:remove_const, :BarHistory2)
+        undefine(:BarHistory3)
+        undefine(:BarHistory2)
       end
 
       subject { BarHistory3.new }
@@ -293,8 +293,8 @@ describe ActiveFedora::Base do
     end
 
     after :all do
-      Object.send(:remove_const, :BarHistory4)
-      Object.send(:remove_const, :BarRdfDatastream)
+      undefine(:BarHistory4)
+      undefine(:BarRdfDatastream)
     end
 
     subject { BarHistory4.new }
@@ -323,7 +323,7 @@ describe ActiveFedora::Base do
     end
 
     after :all do
-      Object.send(:remove_const, :BarHistory4)
+      undefine(:BarHistory4)
     end
 
     subject { BarHistory4}
@@ -344,7 +344,7 @@ describe ActiveFedora::Base do
     end
 
     after :all do
-      Object.send(:remove_const, :BarHistory4)
+      undefine(:BarHistory4)
     end
 
     subject { BarHistory4.new }
@@ -377,8 +377,8 @@ describe ActiveFedora::Base do
     end
 
     after :all do
-      Object.send(:remove_const, :BarHistory4)
-      Object.send(:remove_const, :BarRdfDatastream)
+      undefine(:BarHistory4)
+      undefine(:BarRdfDatastream)
     end
 
     subject { BarHistory4.new(description: 'test1') }
@@ -399,7 +399,7 @@ describe ActiveFedora::Base do
     end
 
     after :all do
-      Object.send(:remove_const, :BarHistory4)
+      undefine(:BarHistory4)
     end
 
     let(:obj) { BarHistory4.new(title: ['test1']) }

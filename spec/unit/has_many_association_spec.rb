@@ -9,8 +9,8 @@ describe ActiveFedora::Associations::HasManyAssociation do
   end
 
   after do
-    Object.send(:remove_const, :Book)
-    Object.send(:remove_const, :Page)
+    undefine(:Book)
+    undefine(:Page)
   end
   let(:book) { Book.new('subject-a') }
   let(:page) { Page.new('object-b') }

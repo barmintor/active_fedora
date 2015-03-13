@@ -19,7 +19,7 @@ describe "An object with RDF backed attributes" do
   end
 
   after do
-    Object.send(:remove_const, :TestOne)
+    undefine(:TestOne)
   end
 
   it "should be able to grab the solr name" do

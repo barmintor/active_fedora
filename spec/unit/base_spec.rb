@@ -11,7 +11,7 @@ describe ActiveFedora::Base do
       end
     end
     after do
-      Object.send(:remove_const, :FooHistory)
+      undefine(:FooHistory)
     end
 
     subject { FooHistory.new(title: ["A good title"]) }
@@ -61,9 +61,9 @@ describe ActiveFedora::Base do
     end
 
     after do
-      Object.send(:remove_const, :FooHistory)
-      Object.send(:remove_const, :FooAdaptation)
-      Object.send(:remove_const, :FooInherited)
+      undefine(:FooHistory)
+      undefine(:FooAdaptation)
+      undefine(:FooInherited)
     end
 
     def increment_id
@@ -205,7 +205,7 @@ describe ActiveFedora::Base do
               test_object.save
             end
             after do
-              Object.send(:remove_const, :WithProperty)
+              undefine(:WithProperty)
             end
 
             it "should update the resource" do

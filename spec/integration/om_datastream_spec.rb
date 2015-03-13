@@ -9,7 +9,7 @@ describe ActiveFedora::OmDatastream do
   end
 
   after(:all) do
-    Object.send(:remove_const, :ModsArticle2)
+    undefine(:ModsArticle2)
   end
 
   let(:obj) { ModsArticle2.create.reload }

@@ -14,7 +14,7 @@ describe "Nested Rdf Objects" do
     end
 
     after do
-      Object.send(:remove_const, :SpecDatastream)
+      undefine(:SpecDatastream)
     end
 
     let(:ds) do
@@ -141,7 +141,7 @@ END
       end
 
       after(:each) do
-        Object.send(:remove_const, :SpecDatastream)
+        undefine(:SpecDatastream)
       end
       let (:ds) { SpecDatastream.new('http://localhost:8983/fedora/rest/test/test:124/descMd') }
 
@@ -202,8 +202,8 @@ END
       end
 
       after(:each) do
-        Object.send(:remove_const, :SpecDatastream)
-        Object.send(:remove_const, :Container)
+        undefine(:SpecDatastream)
+        undefine(:Container)
       end
 
       let(:parent) { Container.new id: '124' }

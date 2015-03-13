@@ -9,7 +9,7 @@ describe ActiveFedora::Base do
   end
 
   after(:all) do
-    Object.send(:remove_const, :ResurrectionModel)
+    undefine(:ResurrectionModel)
   end
 
   context "when an object is has already been deleted" do

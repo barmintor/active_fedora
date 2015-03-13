@@ -9,7 +9,7 @@ describe "Checking fixity" do
   end
 
   after(:all) do
-    Object.send(:remove_const, :MockAFBase)
+    undefine(:MockAFBase)
   end
 
   subject do

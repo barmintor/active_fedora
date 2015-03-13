@@ -21,7 +21,7 @@ describe ActiveFedora::SolrInstanceLoader do
                            description: ['first desc', 'second desc'], another_id: another.id) }
 
   after do
-    Object.send(:remove_const, :Foo)
+    undefine(:Foo)
   end
 
   context "without a solr doc" do

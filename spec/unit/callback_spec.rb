@@ -32,7 +32,7 @@ describe ActiveFedora::Base do
   end
   after :each do
     @cb.destroy if @cb && @cb.persisted?# this only is called if the test failed to run all the way through.
-    Object.send(:remove_const, :CallbackStub)
+    undefine(:CallbackStub)
   end
 
   it "Should have after_initialize, before_save,after_save, before_create, after_create, after_update, before_update, before_destroy" do

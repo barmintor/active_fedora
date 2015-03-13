@@ -16,7 +16,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
       @subject.content = File.new('spec/fixtures/mixed_rdf_descMetadata.nt').read
     end
     after do
-      Object.send(:remove_const, :MyDatastream)
+      undefine(:MyDatastream)
     end
     it "should have a subject" do
       expect(@subject.rdf_subject).to eq "http://localhost:8983/fedora/rest/test/test:1"
@@ -101,7 +101,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
     end
 
     after do
-      Object.send(:remove_const, :MyDatastream)
+      undefine(:MyDatastream)
     end
 
     it "should have fields" do
@@ -121,7 +121,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
       @subject = MyDatastream.new
     end
     after(:each) do
-      Object.send(:remove_const, :MyDatastream)
+      undefine(:MyDatastream)
     end
     it "should support to_s method" do
       expect(@subject.publisher.to_s).to eq [].to_s
@@ -158,7 +158,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
     end
 
     after(:all) do
-      Object.send(:remove_const, :MyDatastream)
+      undefine(:MyDatastream)
     end
 
     before(:each) do
@@ -196,7 +196,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
         @obj.rights = "Totally open, y'all"
       end
       after do
-        Object.send(:remove_const, :Foo)
+        undefine(:Foo)
       end
 
       describe ".to_solr()" do

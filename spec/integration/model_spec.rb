@@ -23,7 +23,7 @@ describe ActiveFedora::Model do
   
   after(:each) do
     @test_instance.delete
-    Object.send(:remove_const, :ModelIntegrationSpec)
+    undefine(:ModelIntegrationSpec)
   end
   
   describe "#all" do

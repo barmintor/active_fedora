@@ -11,8 +11,8 @@ describe "Collection members" do
     end
   end
   after :all do
-    Object.send(:remove_const, :Book)
-    Object.send(:remove_const, :Library)
+    undefine(:Book)
+    undefine(:Library)
   end
 
   describe "size of has_many" do
@@ -80,8 +80,8 @@ describe "After save callbacks" do
     end
   end
   after :all do
-    Object.send(:remove_const, :Book)
-    Object.send(:remove_const, :Library)
+    undefine(:Book)
+    undefine(:Library)
   end
 
   let(:library) { Library.create }
@@ -113,9 +113,9 @@ describe "When two or more relationships share the same property" do
     @person2 = Person.create!(:book=>@book)
   end
   after do
-      Object.send(:remove_const, :Collection)
-      Object.send(:remove_const, :Person)
-      Object.send(:remove_const, :Book)
+      undefine(:Collection)
+      undefine(:Person)
+      undefine(:Book)
   end
 
   it "Should only return relationships of the correct class" do
@@ -141,9 +141,9 @@ describe "with an polymorphic association" do
 
   after do
     Permissionable1.destroy_all
-    Object.send(:remove_const, :Permissionable1)
-    Object.send(:remove_const, :Permissionable2)
-    Object.send(:remove_const, :Permission)
+    undefine(:Permissionable1)
+    undefine(:Permissionable2)
+    undefine(:Permission)
   end
   let(:p1) { Permissionable1.create }
 
@@ -168,9 +168,9 @@ describe "When relationship is restricted to AF::Base" do
   end
 
   after do
-    Object.send(:remove_const, :Image)
-    Object.send(:remove_const, :PDF)
-    Object.send(:remove_const, :Email)
+    undefine(:Image)
+    undefine(:PDF)
+    undefine(:Email)
   end
 
 
@@ -216,8 +216,8 @@ describe "Deleting a dependent relationship" do
   end
 
   after do
-      Object.send(:remove_const, :Item)
-      Object.send(:remove_const, :Component)
+      undefine(:Item)
+      undefine(:Component)
   end
 
   let(:item) { Item.create }
@@ -288,8 +288,8 @@ describe "Autosave" do
     end
 
     after do
-      Object.send(:remove_const, :Item)
-      Object.send(:remove_const, :Component)
+      undefine(:Item)
+      undefine(:Component)
     end
 
     context "From the belongs_to side" do
@@ -326,8 +326,8 @@ describe "Autosave" do
       let(:novel) { Novel.create}
 
       after do
-        Object.send(:remove_const, :Novel)
-        Object.send(:remove_const, :Text)
+        undefine(:Novel)
+        undefine(:Text)
       end
 
       it "should work when added via the has_many" do

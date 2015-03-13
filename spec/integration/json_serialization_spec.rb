@@ -19,7 +19,7 @@ describe "Objects should be serialized to JSON" do
     end
 
     after do
-      Object.send(:remove_const, :Foo)
+      undefine(:Foo)
     end
 
     let(:obj) { Foo.new(foo: ["baz"], bar: 'quix', title: ['My Title']) }
@@ -58,9 +58,9 @@ describe "Objects should be serialized to JSON" do
     end
 
     after do
-      Object.send(:remove_const, "DummyAsset")
-      Object.send(:remove_const, "DummyResource")
-      Object.send(:remove_const, "DummySubnode")
+      undefine("DummyAsset")
+      undefine("DummyResource")
+      undefine("DummySubnode")
     end
 
     let(:obj) { DummyAsset.new { |a| a.relation = 'Great Grandchild' } }

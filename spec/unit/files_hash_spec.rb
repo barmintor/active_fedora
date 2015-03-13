@@ -8,7 +8,7 @@ describe ActiveFedora::FilesHash do
     allow(container).to receive(:undeclared_files).and_return([])
   end
 
-  after { Object.send(:remove_const, :Container) }
+  after { undefine(:Container) }
 
   let(:reflection) { double('reflection') }
   let(:association) { double('association', reader: object) }

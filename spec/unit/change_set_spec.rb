@@ -24,8 +24,8 @@ describe ActiveFedora::ChangeSet do
       base.title = ['bar']
     end
     after do
-      Object.send(:remove_const, :Library)
-      Object.send(:remove_const, :Book)
+      undefine(:Library)
+      undefine(:Book)
     end
 
     let(:base) { Book.create }

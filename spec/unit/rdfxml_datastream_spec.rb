@@ -11,7 +11,7 @@ describe ActiveFedora::RDFXMLDatastream do
     end
 
     after(:each) do
-      Object.send(:remove_const, :MyRdfxmlDatastream)
+      undefine(:MyRdfxmlDatastream)
     end
 
     it "should save and reload" do
@@ -74,8 +74,8 @@ describe ActiveFedora::RDFXMLDatastream do
     end
 
     after do
-      Object.send(:remove_const, :MyDatastream)
-      Object.send(:remove_const, :DAMS)
+      undefine(:MyDatastream)
+      undefine(:DAMS)
     end
 
     describe "a new instance" do

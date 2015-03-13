@@ -9,7 +9,7 @@ describe ActiveFedora::Attributes::Serializers do
       end
     end
     after do
-      Object.send(:remove_const, :Foo)
+      undefine(:Foo)
     end
     subject { Foo.new }
     it "should deserialize dates" do

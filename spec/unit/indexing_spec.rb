@@ -8,7 +8,7 @@ describe ActiveFedora::Indexing do
       end
     end
     after :all do
-      Object.send(:remove_const, :SpecNode)
+      undefine(:SpecNode)
     end
 
     subject { SpecNode.new }
@@ -36,7 +36,7 @@ describe ActiveFedora::Indexing do
       end
     end
     after :all do
-      Object.send(:remove_const, :SpecNode)
+      undefine(:SpecNode)
     end
 
     let(:test_object) { SpecNode.new(title: ['first title'], abstract: 'The abstract') }

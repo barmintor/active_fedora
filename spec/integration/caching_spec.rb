@@ -7,7 +7,7 @@ describe "Caching" do
     end
   end
 
-  after { Object.send(:remove_const, :TestClass) }
+  after { undefine(:TestClass) }
 
   let!(:object) { TestClass.create(id: '123') }
 

@@ -12,7 +12,7 @@ describe ActiveFedora::Base do
   end
 
   after(:all) do
-    Object.send(:remove_const, :SpecModel)
+    undefine(:SpecModel)
   end
 
   describe ":all" do

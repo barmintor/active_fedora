@@ -27,7 +27,7 @@ describe ActiveFedora::QueryResultBuilder do
       @foo_content = @foo_object.attached_files['descMetadata'].content
     end
     after(:each) do
-      Object.send(:remove_const, :FooObject)
+      undefine(:FooObject)
     end
     it "should return an array of objects that are of the class stored in active_fedora_model_s" do
       query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([@test_object.id, @foo_object.id])

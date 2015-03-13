@@ -24,7 +24,7 @@ describe ActiveFedora::Model do
   end
 
   after(:all) do
-    Object.send(:remove_const, :ModelIntegrationSpec)
+    undefine(:ModelIntegrationSpec)
   end
 
 

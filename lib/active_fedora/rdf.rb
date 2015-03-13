@@ -7,6 +7,7 @@ module ActiveFedora
     autoload :Ldp
     autoload :IndexingService
     autoload :Identifiable
+    autoload :Patch
     autoload :Persistence
     autoload :ProjectHydra
   end

@@ -31,6 +31,7 @@ module ActiveFedora
 
     SLASH = '/'.freeze
     BLANK = ''.freeze
+    BLANK_CONTAINER = '<> a <http://www.w3.org/ns/ldp#BasicContainer> .'
 
     # Call this to create a Container Resource to act as the base path for this connection
     def init_base_path
@@ -39,9 +40,17 @@ module ActiveFedora
       false
     rescue Ldp::NotFound
       if !host.downcase.end_with?("/rest")
-        ActiveFedora::Base.logger.warn "Fedora URL (#{host}) does not end with /rest. This could be a problem. Check your fedora.yml config"
+        ActiveFedora::Base.logger.send :warn, "Fedora URL (#{host}) does not end with /rest. This could be a problem. Check your fedora.yml config"
       end
-      connection.put(root_resource_path, BLANK).success?
+      begin
+        ActiveFedora::Base.logger.send :warn, "PUT to #{root_resource_path}"
+#        connection.put(root_resource_path, BLANK_CONTAINER, {'Slug' => root_resource_path}).success?
+#        connection.put(root_resource_path, BLANK_CONTAINER, {'Slug' => root_resource_path}).success?
+        connection.put(root_resource_path, BLANK).success?
+      rescue Exception => e
+        puts e.message + " " + e.backtrace.join("\n")
+        raise e
+      end
     end
 
     # Remove a leading slash from the base_path
@@ -51,7 +60,7 @@ module ActiveFedora
 
     def authorized_connection
       connection = Faraday.new(host)
-      connection.basic_auth(user, password)
+      #connection.basic_auth(user, password)
       connection
     end
 

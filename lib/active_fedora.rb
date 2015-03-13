@@ -83,6 +83,7 @@ module ActiveFedora #:nodoc:
       autoload :RDFDatastream
       autoload :RDFXMLDatastream
       autoload :NtriplesRDFDatastream
+      autoload :TurtleRDFDatastream
       autoload :FedoraRdfResource
     end
     autoload :Reflection

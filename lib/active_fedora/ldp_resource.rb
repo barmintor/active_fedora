@@ -22,5 +22,26 @@ module ActiveFedora
       # forces a cast to FedoraRdfResource
       graph_without_inlined_resources(original_graph, inlined_resources)
     end
+    #OVERRIDES FOR ETAGS
+    ##
+    # Update the stored graph
+    def update new_content = nil
+      new_content ||= content
+      resp = client.put subject, new_content do |req|
+        etag = (retrieved_content?) ? get.etag : head.headers['ETag']
+        req.headers['If-Match'] = etag if etag
+        yield req if block_given?
+      end
+      update_cached_get(resp) if retrieved_content?
+      resp
+    end
+    ##
+    # Delete the resource
+    def delete
+      client.delete subject do |req|
+        etag = (retrieved_content?) ? get.etag : head.headers['ETag']
+        req.headers['If-Match'] = etag if etag
+      end
+    end
   end
 end

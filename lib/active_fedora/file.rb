@@ -250,6 +250,7 @@ module ActiveFedora
       def save(*)
         return unless content_changed?
         headers = { 'Content-Type'.freeze => mime_type, 'Content-Length'.freeze => content.size.to_s }
+        (headers['Link'.freeze] ||= []) << "<http://www.w3.org/ns/ldp#NonRDFSource>;rel=\"type\""
         headers['Content-Disposition'.freeze] = "attachment; filename=\"#{URI.encode(@original_name)}\"" if @original_name
 
         ldp_source.content = content

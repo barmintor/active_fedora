@@ -15,7 +15,8 @@ module ActiveFedora
     end
 
     def update(change_set, klass, id)
-      SparqlInsert.new(change_set.changes).execute(to_uri(klass, id))
+      #SparqlInsert.new(change_set.changes).execute(to_uri(klass, id))
+      ActiveFedora::RDF::Patch.new(change_set.changes).execute(to_uri(klass, id))
     end
 
     private

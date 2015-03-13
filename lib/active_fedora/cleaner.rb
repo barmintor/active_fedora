@@ -1,15 +1,15 @@
 module ActiveFedora
   module Cleaner
     def self.clean!
-      cleanout_fedora
+      #cleanout_fedora
       reinitialize_repo
       cleanout_solr
     end
 
     def self.cleanout_fedora
       begin
-        delete_root_resource
-        delete_tombstone
+        #delete_root_resource
+        #delete_tombstone
       rescue Ldp::HttpError => exception
         log "#cleanout_fedora in spec_helper.rb raised #{exception}"
       end

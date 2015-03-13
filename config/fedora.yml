@@ -1,14 +1,14 @@
 development:
   user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://127.0.0.1:8983/fedora/rest
+  password: MD5:ddb5fbfe98b0dc2cecd6b396994b77f4
+  url: http://localhost:8983/marmotta/ldp
   base_path: /dev
 test:
-  user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://localhost:8983/fedora/rest
+  #user: fedoraAdmin
+  #password: MD5:ddb5fbfe98b0dc2cecd6b396994b77f4
+  url: http://localhost:8983/marmotta/ldp
   base_path: /test
 production:
   user: fedoraAdmin
-  password: fedoraAdmin
-  url: http://127.0.0.1:8983/fedora/rest
+  password: MD5:ddb5fbfe98b0dc2cecd6b396994b77f4
+  url: http://localhost:8983/marmotta/ldp

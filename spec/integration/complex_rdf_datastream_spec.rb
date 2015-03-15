@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe "Nested Rdf Objects" do
+  let(:repo_url) do
+    repo_url = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
+    repo_url.chomp!('/')
+    repo_url
+  end
   describe "without type" do
     before do
       class SpecDatastream < ActiveFedora::NtriplesRDFDatastream
@@ -18,7 +23,7 @@ describe "Nested Rdf Objects" do
     end
 
     let(:ds) do
-      ds = SpecDatastream.new('http://localhost:8983/fedora/rest/test/test:124/descMd')
+      ds = SpecDatastream.new("#{repo_url}/test:124/descMd")
     end
 
     describe "#new_record?" do
@@ -28,8 +33,8 @@ describe "Nested Rdf Objects" do
       end
 
       it "should not be new when it's loaded from fedora" do
-        ds.content = '_:g70324142325120 <http://purl.org/dc/terms/title> "Alternator" .
-<http://localhost:8983/fedora/rest/test/test:124> <http://purl.org/dc/terms/hasPart> _:g70324142325120 .'
+        ds.content = "_:g70324142325120 <http://purl.org/dc/terms/title> \"Alternator\" .
+<#{repo_url}/test:124> <http://purl.org/dc/terms/hasPart> _:g70324142325120 ."
         ds.resource.persist!
         expect(ds.parts.first).to_not be_new_record
       end
@@ -82,8 +87,8 @@ describe "Nested Rdf Objects" do
     it "should load complex objects" do
       ds.content = <<END
 _:g70350851837440 <http://purl.org/dc/terms/title> "Alternator" .
-<http://localhost:8983/fedora/rest/test/test:124> <http://purl.org/dc/terms/hasPart> _:g70350851837440 .
-<http://localhost:8983/fedora/rest/test/test:124> <http://purl.org/dc/terms/hasPart> _:g70350851833380 .
+<#{repo_url}/test:124> <http://purl.org/dc/terms/hasPart> _:g70350851837440 .
+<#{repo_url}/test:124> <http://purl.org/dc/terms/hasPart> _:g70350851833380 .
 _:g70350851833380 <http://purl.org/dc/terms/title> "Crankshaft" .
 END
       expect(ds.parts.first.label).to eq ["Alternator"]
@@ -143,7 +148,7 @@ END
       after(:each) do
         undefine(:SpecDatastream)
       end
-      let (:ds) { SpecDatastream.new('http://localhost:8983/fedora/rest/test/test:124/descMd') }
+      let (:ds) { SpecDatastream.new("#{repo_url}/test:124/descMd") }
 
 
       it "should store the type of complex objects when type is specified" do
@@ -158,7 +163,7 @@ END
       it "should add the type of complex object when it is not provided" do
         ds.content = <<END
   _:g70350851837440 <http://purl.org/dc/terms/title> "Mediation Person" .
-  <http://localhost:8983/fedora/rest/test/test:124> <http://purl.org/dc/terms/mediator> _:g70350851837440 .
+  <#{repo_url}/test:124> <http://purl.org/dc/terms/mediator> _:g70350851837440 .
 END
         expect(ds.mediator.first.type.first.to_s).to eq "http://purl.org/dc/terms/AgentClass"
       end
@@ -167,7 +172,7 @@ END
         ds.content = <<END
   _:g70350851837440 <http://purl.org/dc/terms/title> "Mediation Orgainzation" .
   _:g70350851837440 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.ebu.ch/metadata/ontologies/ebucore#Organisation> .
-  <http://localhost:8983/fedora/rest/test/test:124> <http://purl.org/dc/terms/mediator> _:g70350851837440 .
+  <#{repo_url}/test:124> <http://purl.org/dc/terms/mediator> _:g70350851837440 .
 END
         expect(ds.mediator.first.type.first.to_s).to eq "http://www.ebu.ch/metadata/ontologies/ebucore#Organisation"
       end

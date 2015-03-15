@@ -2,6 +2,11 @@ require 'spec_helper'
 @@last_id = 0
 
 describe ActiveFedora::Base do
+  let(:repo_url) do
+    repo_url = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
+    repo_url.chomp!('/')
+    repo_url
+  end
   it_behaves_like "An ActiveModel"
 
   describe "id=" do
@@ -130,7 +135,7 @@ describe ActiveFedora::Base do
     context "when its saved" do
       before do
         allow(@test_object).to receive(:new_record?).and_return(false)
-        allow(@test_object).to receive(:uri).and_return('http://localhost:8983/fedora/rest/test/one/two/three')
+        allow(@test_object).to receive(:uri).and_return("#{repo_url}/one/two/three")
       end
 
       context "#to_param" do
@@ -209,7 +214,7 @@ describe ActiveFedora::Base do
             end
 
             it "should update the resource" do
-              expect(test_object.resource.rdf_subject).to eq ::RDF::URI.new("#{ActiveFedora.fedora.host}#{ActiveFedora.fedora.base_path}/#{@this_id}")
+              expect(test_object.resource.rdf_subject).to eq ::RDF::URI.new("#{repo_url}/#{@this_id}")
               expect(test_object.title).to eq ['foo']
             end
           end

@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe ActiveFedora::Datastream do
+  let(:repo_url) do
+    repo_url = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
+    repo_url.chomp!('/')
+    repo_url
+  end
   let(:datastream) { ActiveFedora::Datastream.new }
 
   subject { datastream }
@@ -33,7 +38,7 @@ describe ActiveFedora::Datastream do
     subject { ActiveFedora::Datastream.new(parent, 'FOO1') }
 
     it "should set the uri" do
-      expect(subject.uri).to eq "#{ActiveFedora.fedora.host}#{ActiveFedora.fedora.base_path}/1234/FOO1"
+      expect(subject.uri).to eq "#{repo_url}/1234/FOO1"
     end
   end
 
@@ -55,7 +60,7 @@ describe ActiveFedora::Datastream do
       end
     end
 
-    let(:path) { '/fedora/rest/test/1234/abcd' }
+    let(:path) { URI.new("#{repo_url}/1234/abcd").path }
 
     let(:ldp_source) { Ldp::Resource.new(mock_client, path) }
 
@@ -155,13 +160,13 @@ describe ActiveFedora::Datastream do
   context "when the datastream has local content" do
 
     before do
-      datastream.uri = "http://localhost:8983/fedora/rest/test/1234/abcd"
+      datastream.uri = "#{repo_url}/1234/abcd"
       datastream.content = "hi there"
     end
 
     describe "#inspect" do
       subject { datastream.inspect }
-      it { should eq "#<ActiveFedora::Datastream uri=\"http://localhost:8983/fedora/rest/test/1234/abcd\" >" }
+      it { should eq "#<ActiveFedora::Datastream uri=\"#{repo_url}/1234/abcd\" >" }
     end
   end
 

@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe ActiveFedora::SparqlInsert do
   let(:change_set) { ActiveFedora::ChangeSet.new(base, base.resource, base.changed_attributes.keys) }
+  let(:repo_url) do
+    repo_url = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
+    repo_url.chomp!('/')
+    repo_url
+  end
   subject { ActiveFedora::SparqlInsert.new(change_set.changes) }
 
   context "with a changed object" do
@@ -26,7 +31,15 @@ describe ActiveFedora::SparqlInsert do
 
 
     it "should return the string" do
-      expect(subject.build).to eq "DELETE { <> <info:fedora/fedora-system:def/relations-external#hasConstituent> ?change . }\n  WHERE { <> <info:fedora/fedora-system:def/relations-external#hasConstituent> ?change . } ;\nDELETE { <> <http://purl.org/dc/terms/title> ?change . }\n  WHERE { <> <http://purl.org/dc/terms/title> ?change . } ;\nINSERT { \n<> <info:fedora/fedora-system:def/relations-external#hasConstituent> <http://localhost:8983/fedora/rest/test/foo> .\n<> <http://purl.org/dc/terms/title> \"bar\" .\n}\n WHERE { }"
+      expected = <<END
+DELETE { <> <info:fedora/fedora-system:def/relations-external#hasConstituent> ?change . }
+  WHERE { <> <info:fedora/fedora-system:def/relations-external#hasConstituent> ?change . } ;
+DELETE { <> <http://purl.org/dc/terms/title> ?change . }
+  WHERE { <> <http://purl.org/dc/terms/title> ?change . } ;
+INSERT { \n<> <info:fedora/fedora-system:def/relations-external#hasConstituent> <#{repo_url}/foo> .
+<> <http://purl.org/dc/terms/title> \"bar\" .\n}\n WHERE { }
+END
+      expect(subject.build).to eq expected.chomp
     end
   end
 end

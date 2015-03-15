@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe ActiveFedora::NtriplesRDFDatastream do
+  let(:repo_url) do
+    repo_url = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
+    repo_url.chomp!('/')
+    repo_url
+  end
   describe "an instance with content" do
     before do
       class MyDatastream < ActiveFedora::NtriplesRDFDatastream
@@ -19,7 +24,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
       undefine(:MyDatastream)
     end
     it "should have a subject" do
-      expect(@subject.rdf_subject).to eq "http://localhost:8983/fedora/rest/test/test:1"
+      expect(@subject.rdf_subject).to eq "#{repo_url}/test:1"
     end
     it "should have mime_type" do
       expect(@subject.mime_type).to eq 'text/plain'
@@ -83,13 +88,20 @@ describe ActiveFedora::NtriplesRDFDatastream do
   describe "an instance with a custom subject" do
     before do
       class MyDatastream < ActiveFedora::NtriplesRDFDatastream
-        rdf_subject { |ds| "http://localhost:8983/fedora/rest/test/#{ds.id}/content" }
+        def self.repo_url
+          @repo_url
+        end
+        def self.repo_url=(url)
+          @repo_url=url
+        end
+        rdf_subject { |ds| repo_url + "/#{ds.id}/content" }
         property :created, predicate: ::RDF::DC.created
         property :title, predicate: ::RDF::DC.title
         property :publisher, predicate: ::RDF::DC.publisher
         property :based_near, predicate: ::RDF::FOAF.based_near
         property :related_url, predicate: ::RDF::RDFS.seeAlso
       end
+      MyDatastream.repo_url = repo_url
       @subject = MyDatastream.new
       allow(@subject).to receive(:id).and_return 'test:1'
       allow(@subject).to receive(:new_record?).and_return false
@@ -109,7 +121,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
     end
 
     it "should have a custom subject" do
-      expect(@subject.rdf_subject).to eq 'http://localhost:8983/fedora/rest/test/test:1/content'
+      expect(@subject.rdf_subject).to eq "#{repo_url}/test:1/content"
     end
   end
 

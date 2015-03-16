@@ -9,7 +9,7 @@ describe "Caching" do
 
   after { undefine(:TestClass) }
 
-  let!(:object) { TestClass.create(id: '123') }
+  let!(:object) { TestClass.create(id: random_id) }
 
   describe "#cache" do
     it "should find records in the cache" do

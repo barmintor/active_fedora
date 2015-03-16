@@ -10,6 +10,8 @@ describe ActiveFedora::File do
         subject.content = "some stuff"
         subject.save
         expect(subject).not_to be_new_record
+        loaded = ActiveFedora::File.new(subject.ldp_source.subject)
+        expect(loaded.content).to eql("some stuff")
       end
     end
 

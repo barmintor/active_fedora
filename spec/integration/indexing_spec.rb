@@ -4,6 +4,7 @@ require 'spec_helper'
 describe ActiveFedora::Base do
   describe "descendant_uris" do
 
+    let(:base_id) { random_id }
     before :each do
       ids.each do |id|
         ActiveFedora::Base.create id: id
@@ -16,7 +17,7 @@ describe ActiveFedora::Base do
 
     context 'when there there are no descendants' do
 
-      let(:ids) { ['foo'] }
+      let(:ids) { [base_id] }
 
       it 'returns an array containing only the URI passed to it' do
         expect(ActiveFedora::Base.descendant_uris(root_uri(ids))).to eq ids.map {|id| ActiveFedora::Base.id_to_uri(id) }
@@ -24,8 +25,7 @@ describe ActiveFedora::Base do
     end
 
     context 'when there are > 1 descendants' do
-
-      let(:ids) { ['foo', 'foo/bar', 'foo/bar/chu'] }
+      let(:ids) { [base_id, base_id + '/bar', base_id + '/bar/chu'] }
 
       it 'returns an array containing the URI passed to it, as well as all descendant URIs' do
         expect(ActiveFedora::Base.descendant_uris(root_uri(ids))).to eq ids.map {|id| ActiveFedora::Base.id_to_uri(id) }
@@ -33,8 +33,8 @@ describe ActiveFedora::Base do
     end
 
     context 'when some of the decendants are not RDFSources' do
-      let(:ids) { ['foo', 'foo/bar'] }
-      let(:datastream) { ActiveFedora::Datastream.new(ActiveFedora::Base.id_to_uri('foo/bar/bax')) }
+      let(:ids) { [base_id, base_id + '/bar'] }
+      let(:datastream) { ActiveFedora::Datastream.new(ActiveFedora::Base.id_to_uri(base_id + '/bar/bax')) }
 
       before do
         datastream.content = "Hello!!!"
@@ -47,7 +47,7 @@ describe ActiveFedora::Base do
     end
 
     describe "reindex_everything" do
-      let(:ids) { ['foo', 'bar'] }
+      let(:ids) { [base_id, random_id] }
       let(:solr) { ActiveFedora::SolrService.instance.conn }
       before do
         solr.delete_by_query('*:*', params: {'softCommit' => true})
@@ -55,7 +55,7 @@ describe ActiveFedora::Base do
       it "should call update_index on every object represented in the sitemap" do
         expect {
           ActiveFedora::Base.reindex_everything
-        }.to change { ActiveFedora::SolrService.query('id:foo').size }.from(0).to(1)
+        }.to change { ActiveFedora::SolrService.query('id:' + base_id).size }.from(0).to(1)
       end
     end
   end

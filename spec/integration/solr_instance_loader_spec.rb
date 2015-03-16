@@ -17,7 +17,8 @@ describe ActiveFedora::SolrInstanceLoader do
 
   let(:another) { Foo.create }
 
-  let!(:obj) { Foo.create!(id: 'test-123', foo: ["baz"], bar: 'quix', title: 'My Title',
+  let(:obj_id) { random_id }
+  let!(:obj) { Foo.create!(id: obj_id, foo: ["baz"], bar: 'quix', title: 'My Title',
                            description: ['first desc', 'second desc'], another_id: another.id) }
 
   after do
@@ -74,7 +75,7 @@ describe ActiveFedora::SolrInstanceLoader do
 
   context "with a solr doc" do
     let(:profile) { { "foo"=>["baz"], "bar"=>"quix", "title"=>"My Title"}.to_json }
-    let(:doc) { { 'id' => 'test-123', 'has_model_ssim'=>['Foo'], 'object_profile_ssm' => profile } }
+    let(:doc) { { 'id' => obj_id, 'has_model_ssim'=>['Foo'], 'object_profile_ssm' => profile } }
     let(:loader) { ActiveFedora::SolrInstanceLoader.new(Foo, obj.id, doc) }
 
     subject { loader.object }
@@ -87,7 +88,7 @@ describe ActiveFedora::SolrInstanceLoader do
 
   context "when the model has extra values in its json" do
     let(:profile) { { "foo"=>["baz"], "bar"=>"quix", "title"=>"My Title", "extra_value"=>"Bonus values!"}.to_json }
-    let(:doc) { { 'id' => 'test-123', 'has_model_ssim'=>['Foo'], 'object_profile_ssm' => profile } }
+    let(:doc) { { 'id' => obj_id, 'has_model_ssim'=>['Foo'], 'object_profile_ssm' => profile } }
     let(:loader) { ActiveFedora::SolrInstanceLoader.new(Foo, obj.id, doc) }
     it "should load the object without trouble" do
       expect(loader.object).to be_instance_of Foo

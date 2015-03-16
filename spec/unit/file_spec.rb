@@ -60,7 +60,7 @@ describe ActiveFedora::Datastream do
       end
     end
 
-    let(:path) { URI.new("#{repo_url}/1234/abcd").path }
+    let(:path) { URI("#{repo_url}/1234/abcd").path }
 
     let(:ldp_source) { Ldp::Resource.new(mock_client, path) }
 

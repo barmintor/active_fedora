@@ -17,6 +17,7 @@ require 'rspec'
 require 'equivalent-xml/rspec_matchers'
 require 'logger'
 require 'byebug' unless ENV['TRAVIS']
+require 'securerandom'
 
 ActiveFedora::Base.logger = Logger.new(STDERR)
 ActiveFedora::Base.logger.level = Logger::WARN
@@ -59,4 +60,8 @@ end
 
 def undefine(const)
   Object.send(:remove_const, const) if (Object.const_defined? const)
+end
+
+def random_id(ns="test",len=16)
+  "#{ns}:#{SecureRandom.hex(len)}"
 end

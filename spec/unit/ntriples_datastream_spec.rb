@@ -6,6 +6,15 @@ describe ActiveFedora::NtriplesRDFDatastream do
     repo_url.chomp!('/')
     repo_url
   end
+  let(:test_id) { random_id }
+  let(:mixed_fixture) do
+    test_uri = "<#{repo_url}/#{test_id}"
+    File.new('spec/fixtures/mixed_rdf_descMetadata.nt').read.gsub('<?',test_uri)
+  end
+  let(:solr_fixture) do
+    test_uri = "<#{repo_url}/#{test_id}"
+    File.new('spec/fixtures/solr_rdf_descMetadata.nt').read.gsub('<?',test_uri)
+  end
   describe "an instance with content" do
     before do
       class MyDatastream < ActiveFedora::NtriplesRDFDatastream
@@ -17,14 +26,14 @@ describe ActiveFedora::NtriplesRDFDatastream do
         property :based_near, predicate: ::RDF::FOAF.based_near
         property :related_url, predicate: ::RDF::RDFS.seeAlso
       end
-      @subject = MyDatastream.new(ActiveFedora::Base.id_to_uri '/test:1/descMetadata')
-      @subject.content = File.new('spec/fixtures/mixed_rdf_descMetadata.nt').read
+      @subject = MyDatastream.new(ActiveFedora::Base.id_to_uri "/#{test_id}/descMetadata")
+      @subject.content = mixed_fixture
     end
     after do
       undefine(:MyDatastream)
     end
     it "should have a subject" do
-      expect(@subject.rdf_subject).to eq "#{repo_url}/test:1"
+      expect(@subject.rdf_subject).to eq "#{repo_url}/#{test_id}"
     end
     it "should have mime_type" do
       expect(@subject.mime_type).to eq 'text/plain'
@@ -103,9 +112,9 @@ describe ActiveFedora::NtriplesRDFDatastream do
       end
       MyDatastream.repo_url = repo_url
       @subject = MyDatastream.new
-      allow(@subject).to receive(:id).and_return 'test:1'
+      allow(@subject).to receive(:id).and_return test_id
       allow(@subject).to receive(:new_record?).and_return false
-      allow(@subject).to receive(:remote_content).and_return remote_content
+      allow(@subject).to receive(:remote_content).and_return mixed_fixture
     end
 
     let(:remote_content) do
@@ -121,7 +130,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
     end
 
     it "should have a custom subject" do
-      expect(@subject.rdf_subject).to eq "#{repo_url}/test:1/content"
+      expect(@subject.rdf_subject).to eq "#{repo_url}/#{test_id}/content"
     end
   end
 
@@ -175,7 +184,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
 
     before(:each) do
       @subject = MyDatastream.new
-      @subject.content = File.new('spec/fixtures/solr_rdf_descMetadata.nt').read
+      @subject.content = solr_fixture
       @subject.serialize
     end
 

@@ -20,7 +20,7 @@ describe ActiveFedora::Base do
     end
     context "in a typical sitation" do
       specify "it cannot be reused" do
-        expect { ActiveFedora::Base.create(ghost) }.to raise_error(Ldp::Gone)
+        expect { ActiveFedora::Base.create(ghost) }.to raise_error # (Ldp::Gone or Ldp::BadRequest by impl)
       end
     end
     specify "remove its tombstone" do

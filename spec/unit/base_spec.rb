@@ -76,7 +76,7 @@ describe ActiveFedora::Base do
     end
 
     before do
-      @this_id = increment_id.to_s
+      @this_id = random_id
       @test_object = ActiveFedora::Base.new
       allow(@test_object).to receive(:assign_id).and_return(@this_id)
     end
@@ -202,11 +202,12 @@ describe ActiveFedora::Base do
 
           context "and the object has properties" do
             let(:test_object) { WithProperty.new(title: ['foo']) }
+            let(:test_uri) { random_id() }
             before do
               class WithProperty < ActiveFedora::Base
                 property :title, predicate: ::RDF::DC.title
               end
-              allow(test_object).to receive(:assign_id).and_return(@this_id)
+              allow(test_object).to receive(:assign_id).and_return(test_uri)
               test_object.save
             end
             after do
@@ -214,20 +215,24 @@ describe ActiveFedora::Base do
             end
 
             it "should update the resource" do
-              expect(test_object.resource.rdf_subject).to eq ::RDF::URI.new("#{repo_url}/#{@this_id}")
+              expect(test_object.resource.rdf_subject).to eq ::RDF::URI.new("#{repo_url}/#{test_uri}")
               expect(test_object.title).to eq ['foo']
             end
           end
         end
 
         context "when an id is set" do
+          let(:test_uri) { random_id() }
           before do
-            @test_object = ActiveFedora::Base.new(id: '999')
+            @test_object = ActiveFedora::Base.new(id: test_uri)
             allow(@test_object).to receive(:assign_id).and_return(@this_id)
+          end
+          after do
+            @test_object.destroy
           end
           it "should not set the id" do
             @test_object.save
-            expect(@test_object.id).to eq '999'
+            expect(@test_object.id).to eq test_uri
           end
         end
       end

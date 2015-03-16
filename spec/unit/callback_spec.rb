@@ -1,11 +1,8 @@
 require 'spec_helper'
 
 describe ActiveFedora::Base do
+  let(:test_uri) { random_id()}
   before :each do
-    begin 
-      ActiveFedora::Base.find('test:123').delete
-    rescue
-    end
 
     class CallbackStub < ActiveFedora::Base
       has_metadata :type=>ActiveFedora::SimpleDatastream, :name=>"someData" do |m|
@@ -41,7 +38,7 @@ describe ActiveFedora::Base do
     allow_any_instance_of(CallbackStub).to receive :a_create
     allow_any_instance_of(CallbackStub).to receive(:b_save)
     allow_any_instance_of(CallbackStub).to receive(:a_save)
-    @cb = CallbackStub.new 'test:123'
+    @cb = CallbackStub.new test_uri
     @cb.save
   end
 
@@ -51,7 +48,7 @@ describe ActiveFedora::Base do
     allow_any_instance_of(CallbackStub).to receive(:a_create)
     allow_any_instance_of(CallbackStub).to receive(:b_save)
     allow_any_instance_of(CallbackStub).to receive(:a_save)
-    @cb = CallbackStub.new 'test:123'
+    @cb = CallbackStub.new test_uri
     @cb.save
     allow_any_instance_of(CallbackStub).to receive(:a_init)
     allow_any_instance_of(CallbackStub).to receive(:b_save)
@@ -61,7 +58,7 @@ describe ActiveFedora::Base do
     allow_any_instance_of(CallbackStub).to receive(:a_update)
     allow_any_instance_of(CallbackStub).to receive(:do_stuff)
 
-    @cb = CallbackStub.find('test:123')
+    @cb = CallbackStub.find(test_uri)
     @cb.save!
 
     @cb.destroy

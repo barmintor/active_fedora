@@ -47,11 +47,12 @@ describe ActiveFedora::NtriplesRDFDatastream do
   end
 
   it "should save content properly upon save" do
-    foo = RdfTest.new('test:1') #ID needs to match the subject in the loaded file
+    id = random_id
+    foo = RdfTest.new(id) #ID needs to match the subject in the loaded file
     foo.title = 'Hamlet'
     foo.save
     expect(foo.title).to eq 'Hamlet'
-    foo.rdf.content = File.new('spec/fixtures/mixed_rdf_descMetadata.nt').read
+    foo.rdf.content = File.new('spec/fixtures/mixed_rdf_descMetadata.nt').read.gsub('<?',"<#{foo.uri}")
     foo.save
     expect(foo.title).to eq 'Title of work'
   end
@@ -155,7 +156,7 @@ describe ActiveFedora::NtriplesRDFDatastream do
     before do
       # reopening existing class
       class MyDatastream < ActiveFedora::NtriplesRDFDatastream
-        rdf_subject { |ds| RDF::URI.new("http://oregondigital.org/ns/#{parent_uri(ds).split('/')[-1].split(':')[1]}") }
+        rdf_subject { |ds| RDF::URI.new("http://oregondigital.org/ns/#{parent_uri(ds).split('/')[-1].split(':')[-1]}") }
         property :dctype, predicate: ::RDF::DC.type
       end
       subject.rdf.dctype = "Frog"
@@ -165,12 +166,13 @@ describe ActiveFedora::NtriplesRDFDatastream do
     after do
       subject.destroy
     end
-
-    subject { RdfTest.new('/test:99') }
+    let(:test_id) { random_id}
+    let(:test_local) { test_id.split(':')[-1]}
+    subject { RdfTest.new('/' + test_id) }
 
     it "should write rdf with proper subjects" do
       subject.reload
-      expect(subject.rdf.graph.dump(:ntriples)).to eq "<http://oregondigital.org/ns/99> <http://purl.org/dc/terms/type> \"Frog\" .\n"
+      expect(subject.rdf.graph.dump(:ntriples)).to eq "<http://oregondigital.org/ns/#{test_local}> <http://purl.org/dc/terms/type> \"Frog\" .\n"
       subject.rdf.dctype == ['Frog']
     end
 

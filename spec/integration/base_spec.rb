@@ -16,7 +16,6 @@ describe "A base object with metadata" do
       @obj.foo.person = "bob"
       @obj.save
     end
-
     it "should save the datastream." do
       obj = ActiveFedora::Base.find(@obj.id)
       expect(obj.foo).to_not be_new_record

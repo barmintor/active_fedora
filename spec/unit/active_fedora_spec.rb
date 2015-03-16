@@ -18,7 +18,7 @@ describe ActiveFedora do
   describe "validate Fedora URL" do 
 
     let(:good_url) { ActiveFedora.fedora_config.credentials[:url] }
-    let(:bad_url) { good_url.gsub('/rest', '/') }
+    let(:bad_url) { bu = good_url.split('/'); bu[-1] = 'DO_NOT_USE'; bu.join('/') }
     let(:user) { ActiveFedora.fedora_config.credentials[:user] }
     let(:password) { ActiveFedora.fedora_config.credentials[:password] }
 

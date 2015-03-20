@@ -1,8 +1,10 @@
 module ActiveFedora
   module Cleaner
     def self.clean!
-      cleanout_fedora
-      reinitialize_repo
+      if ActiveFedora.fedora.reuses_uris?
+        cleanout_fedora
+        reinitialize_repo
+      end
       cleanout_solr
     end
 

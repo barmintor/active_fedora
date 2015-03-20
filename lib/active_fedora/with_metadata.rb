@@ -22,12 +22,12 @@ module ActiveFedora
       end
 
       def metadata_schema
-        @metadata_schema ||= MetadataNode(self)
+        @metadata_schema ||= MetadataNodeClass(self)
       end
 
       # Make a subclass of MetadataNode named GeneratedMetadataSchema and set its
       # parent_class attribute to have the value of the current class.
-      def MetadataNode(parent_klass)
+      def MetadataNodeClass(parent_klass)
         klass = self.const_set(:GeneratedMetadataSchema, Class.new(MetadataNode))
         klass.parent_class = parent_klass
         klass

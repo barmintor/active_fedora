@@ -215,9 +215,9 @@ module ActiveFedora
     end
 
     def fetch_original_name_from_headers
-      return if new_record?
-      m = ldp_source.head.headers['Content-Disposition'].match(/filename="(?<filename>[^"]*)";/)
-      URI.decode(m[:filename])
+      return if new_record? || ldp_source.head.headers['Content-Disposition'].blank?
+      m = ldp_source.head.headers['Content-Disposition'].match(/filename="(?<filename>[^"]*)";?/)
+      m ? URI.decode(m[:filename]) : nil
     end
 
     def fetch_mime_type
@@ -251,17 +251,30 @@ module ActiveFedora
         return unless content_changed?
         headers = { 'Content-Type'.freeze => mime_type, 'Content-Length'.freeze => content.size.to_s }
         headers['Content-Disposition'.freeze] = "attachment; filename=\"#{URI.encode(@original_name)}\"" if @original_name
-
-        ldp_source.content = content
+        (headers['Link'.freeze] ||= []) << "<http://www.w3.org/ns/ldp#NonRDFSource>; rel=\"type\""
         if new_record?
-          ldp_source.create do |req|
-            req.headers.merge!(headers)
+          if ldp_source.subject
+            container = ldp_source.subject.slice(0...ldp_source.subject.rindex('/'))
+            uri = ldp_source.subject.slice(ldp_source.subject.rindex('/')..-1)
+            headers['Slug'.freeze] = uri.slice(1..-1)
+            post_source = Ldp::Resource::BinarySource.new(ldp_connection, nil, nil, container)
+            @ldp_source = post_source.create do |req|
+              req.headers.merge!(headers)
+              req.body = content
+            end
+          else
+            ldp_source.create do |req|
+              req.headers.merge!(headers)
+              req.body = content
+            end
           end
         else
+          ldp_source.content = content
           ldp_source.update do |req|
             req.headers.merge!(headers)
           end
         end
+        ensure_original_name
         reset
         changed_attributes.clear
       end
@@ -292,6 +305,28 @@ module ActiveFedora
           @content
         end
         @content
+      end
+      def ensure_original_name
+        rdf = described_by
+        uri = URI(described_by)
+        req = Net::HTTP::Get.new(uri)
+        req.basic_auth ActiveFedora.fedora.user, ActiveFedora.fedora.password if ActiveFedora.fedora.user
+        rdf = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(req)}
+        stmts = ::RDF::Reader.for(content_type: rdf['Content-Type']).new(rdf.body)
+        graph = ::RDF::Graph.new
+        stmts.each_statement {|stmt| graph << stmt}
+        slug_prop = ActiveFedora.fedora.uri_property(:original_name)
+        stmts = graph.query([nil, slug_prop, nil])
+        if stmts.blank? || stmts.first.object.to_s != original_name
+          changes = {slug_prop => []}
+          changes[slug_prop] <<
+            ::RDF::Statement.new(::RDF::URI(nil), slug_prop,::RDF::Literal.new(@original_name))
+          req = Net::HTTP::Patch.new(uri)
+          req.basic_auth ActiveFedora.fedora.user, ActiveFedora.fedora.password if ActiveFedora.fedora.user
+          req['Content-Type'] = "application/sparql-update"
+          req.body = SparqlInsert.new(changes).build
+          res = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(req)}
+        end
       end
     end
 

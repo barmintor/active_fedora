@@ -6,11 +6,11 @@ module ActiveFedora
       @connection = conn
     end
 
-    def build(klass, id)
+    def build(klass, id, base_path=nil)
       if id
         LdpResource.new(connection, to_uri(klass, id))
       else
-        LdpResource.new(connection, nil, nil, ActiveFedora.fedora.host + ActiveFedora.fedora.base_path)
+        LdpResource.new(connection, nil, nil, base_path || (ActiveFedora.fedora.host + ActiveFedora.fedora.base_path))
       end
     end
 

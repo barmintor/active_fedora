@@ -182,8 +182,8 @@ module ActiveFedora
         @association_cache = {}
       end
 
-      def build_ldp_resource(id=nil)
-        ActiveFedora.fedora.ldp_resource_service.build(self.class, id)
+      def build_ldp_resource(id=nil,base_path=nil)
+        ActiveFedora.fedora.ldp_resource_service.build(self.class, id, base_path)
       end
 
       def check_persistence

@@ -1,3 +1,5 @@
+require 'rdf'
+require 'rdf/turtle'
 module ActiveFedora
   # = Active Fedora Persistence
   module Persistence
@@ -126,13 +128,16 @@ module ActiveFedora
       def gone? uri
         ActiveFedora::Base.find(uri)
         false
-      rescue Ldp::Gone
+      rescue Ldp::Gone # depending on impl
         true
       end
 
       def delete_tombstone uri
         tombstone = ActiveFedora::Base.id_to_uri(uri) + "/fcr:tombstone"
-        ActiveFedora.fedora.connection.delete(tombstone)
+        begin
+          ActiveFedora.fedora.connection.delete(tombstone)
+        rescue Ldp::Gone, Ldp::NotFound
+        end
         true
       end
     end
@@ -148,7 +153,25 @@ module ActiveFedora
     def create_record(options = {})
       assign_rdf_subject
       serialize_attached_files
-      @ldp_source = @ldp_source.create
+      ixm = 'http://www.w3.org/ns/ldp#DirectContainer'
+      if @ldp_source.subject
+        slug = @ldp_source.subject.slice(@ldp_source.subject.rindex('/')+1..-1)
+        container = @ldp_source.subject.slice(0...@ldp_source.subject.rindex('/'))
+        poster = build_ldp_resource(nil,container)
+        poster.content= @ldp_source.graph.dump(:ttl)
+        if @ldp_source.content.blank? || @ldp_source.content.empty?
+          @ldp_source.graph << ::RDF::Statement.new(::RDF::URI(''),::RDF.type,::RDF::URI(ixm))
+        end
+      else
+        slug = nil
+        poster = @ldp_source
+      end
+      @ldp_source = poster.create do |req|
+        req.headers['Slug'.freeze] = slug if slug
+        req.headers['Content-Type'.freeze] = 'text/turtle'
+        (req.headers['Link'.freeze] ||= []) << "<#{ixm}>; rel=\"type\""
+        req.body = @ldp_source.graph.dump(:ttl)
+      end
       @resource = nil
       assign_uri_to_attached_files
       save_attached_files
@@ -186,6 +209,8 @@ module ActiveFedora
       else
         LdpResource.new(ActiveFedora.fedora.connection, @ldp_source.subject, @resource, ActiveFedora.fedora.host + ActiveFedora.fedora.base_path)
       end
+      @ldp_source.graph << ::RDF::Statement.new(::RDF::URI.new(),::RDF.type, ::RDF::URI.new('http://www.w3.org/ns/ldp#DirectContainer'))
+      @ldp_source
     end
 
     def assign_uri_to_attached_files

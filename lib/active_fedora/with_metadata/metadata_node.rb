@@ -28,7 +28,20 @@ module ActiveFedora
       end
 
       def ldp_source
-        @ldp_source ||= LdpResource.new(ldp_connection, metadata_uri)
+        @ldp_source ||= begin
+          rs =  LdpResource.new(ldp_connection, metadata_uri)
+          unless file.new_record?
+            # until Faraday can deal with null param encoding correctly, use POR HTTP
+            uri = URI(metadata_uri)
+            req = Net::HTTP::Get.new(uri)
+            req.basic_auth ActiveFedora.fedora.user, ActiveFedora.fedora.password if ActiveFedora.fedora.user
+            rdf = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(req)}
+            puts rdf.body
+            stmts = ::RDF::Reader.for(content_type: rdf['Content-Type']).new(rdf.body)
+            stmts.each {|stmt| rs.graph << ::RDF::Statement.new(::RDF::URI(file.uri),stmt.predicate,stmt.object)}
+          end
+          rs
+        end
       end
 
       def ldp_connection
@@ -38,7 +51,13 @@ module ActiveFedora
       def save
         raise "Save the file first" if file.new_record?
         change_set = ChangeSet.new(self, self, changed_attributes.keys)
-        SparqlInsert.new(change_set.changes, ::RDF::URI.new(file.uri)).execute(metadata_uri)
+        # until Faraday can deal with null param encoding correctly, use POR HTTP
+        uri = URI(metadata_uri)
+        req = Net::HTTP::Patch.new(uri)
+        req.basic_auth ActiveFedora.fedora.user, ActiveFedora.fedora.password if ActiveFedora.fedora.user
+        req['Content-Type'] = "application/sparql-update"
+        req.body = SparqlInsert.new(change_set.changes, ::RDF::URI.new(nil)).build
+        res = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(req)}
         @ldp_source = nil
         true
       end

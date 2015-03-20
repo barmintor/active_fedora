@@ -63,5 +63,5 @@ def undefine(const)
 end
 
 def random_id(ns="test",len=16)
-  "#{ns}:#{SecureRandom.hex(len)}"
+  "#{ns}#{SecureRandom.hex(len)}"
 end

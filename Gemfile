@@ -12,3 +12,4 @@ group :test do
 end
 
 gem 'jruby-openssl', platform: :jruby
+gem 'ldp', git: 'https://github.com/barmintor/ldp.git', branch: 'lyo-compat'

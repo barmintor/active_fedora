@@ -117,9 +117,15 @@ module ActiveFedora
       end
 
       config = fedora_yml.symbolize_keys
-
+      default = (config[:default] || {}).symbolize_keys
       cfg = config[ActiveFedora.environment.to_sym] || {}
-      @fedora_config = cfg.kind_of?(Array) ? cfg.map(&:symbolize_keys) : cfg.symbolize_keys
+      if cfg.kind_of?(Array)
+        cfg = cfg.map(&:symbolize_keys).map {|c| c.reverse_merge!(default)}
+      else
+        cfg = cfg.symbolize_keys
+        cfg.reverse_merge!(default)
+      end
+      @fedora_config = cfg
     end
 
     def load_solr_config

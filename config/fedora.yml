@@ -1,14 +1,22 @@
+default:
+  create_date: 'http://fedora.info/definitions/v4/repository#created'
+  modified_date: 'http://fedora.info/definitions/v4/repository#lastModified'
+  original_name: 'http://www.loc.gov/premis/rdf/v1#hasOriginalName'
 development:
   user: fedoraAdmin
   password: fedoraAdmin
-  url: http://127.0.0.1:8983/fedora/rest
+  url: http://127.0.0.1:8983/ldp/resources
   base_path: /dev
 test:
   user: fedoraAdmin
   password: fedoraAdmin
-  url: http://localhost:8983/fedora/rest
+  url: http://localhost:8983/ldp/resources
   base_path: /test
+  reuse_uris: false
+  create_date: http://purl.org/dc/terms/created
+  modified_date: http://purl.org/dc/terms/modified
+  original_name: 'http://eclipse.org/lyo/ns#slug'
 production:
   user: fedoraAdmin
   password: fedoraAdmin
-  url: http://127.0.0.1:8983/fedora/rest
+  url: http://127.0.0.1:8983/ldp/resources
